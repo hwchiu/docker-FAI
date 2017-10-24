@@ -1,0 +1,7 @@
+DEFAULT vesamenu.c32
+MENU TITLE Network boot
+ 
+LABEL ubuntu-mate-16.04.2-desktop-amd64
+  MENU LABEL ubuntu-mate-16.04.2-desktop-amd64
+  KERNEL ubuntu-mate-16.04.2-desktop-amd64/vmlinuz.efi
+  APPEND initrd=ubuntu-mate-16.04.2-desktop-amd64/initrd.lz root=/dev/nfs boot=casper netboot=nfs nfsroot=10.0.0.2:/ubuntu-mate-16.04.2-desktop-amd64 splash --

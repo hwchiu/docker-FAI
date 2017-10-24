@@ -7,25 +7,56 @@ apt-get -y install isc-dhcp-server \
     xinetd \
     nfs-kernel-server
 
-mkdir -p /install/tftpboot/ubuntu-16.04.3-desktop-amd64
+
+#Create Directory/Files
+
+##Tftp Server
+mkdir -p /install/tftpboot/${IMAGE}
+##Loop Mount
+mkdir /tmp/iso
+##NFS Server
+mkdir /${IMAGE}
+##DHCP
+touch /var/lib/dhcp/dhcpd.leases
+#PXE Linux
+mkdir /install/tftpboot/pxelinux.cfg
+
+#Copy files
+
+mv "/tmp/tftp" "/etc/xinetd.d/tftp"
+mv "/tmp/dhcpd.conf" "/etc/dhcp/dhcpd.conf"
+mv "/tmp/isc-dhcp-server" "/etc/default/isc-dhcp-server"
+mv "/tmp/pxelinux.0" "/install/tftpboot/pxelinux.0"
+mv "/tmp/libcom32.c32" "/install/tftpboot/libcom32.c32"
+mv "/tmp/libutil.c32" "/install/tftpboot/libutil.c32"
+mv "/tmp/ldlinux.c32" "/install/tftpboot/ldlinux.c32"
+mv "/tmp/vesamenu.c32" "/install/tftpboot/vesamenu.c32"
+mv "/tmp/default" "/install/tftpboot/pxelinux.cfg/default"
+mv "/tmp/run.sh" "/run.sh"
+
+#Change Permission
+##TFTP Server
 chmod -R 777 /install/tftpboot
 chown -R nobody /install/tftpboot
-touch /var/lib/dhcp/dhcpd.leases
+
+##DHCP
 chown root:dhcpd /var/lib/dhcp /var/lib/dhcp/dhcpd.leases
 chmod 775 /var/lib/dhcp
 chmod 664 /var/lib/dhcp/dhcpd.leases
 
 
-mkdir /tmp/iso
-cd /tmp/iso
-wget -q http://releases.ubuntu.com/16.04/ubuntu-16.04.3-desktop-amd64.iso
-mount -oloop,ro /tmp/${IMAGEISO} /tmp/iso
+#Donwload Images
+cd /tmp/
+wget -q http://releases.ubuntu.com/16.04/${IMAGEISO}
 
+#Mount Loop Devices and get vmlinuz.efim initrd.lz and save them into TFTP server
+mount -oloop,ro /tmp/${IMAGEISO} /tmp/iso
 cp /tmp/iso/casper/{vmlinuz.efi,initrd.lz} /install/tftpboot/${IMAGE}/
-mkdir /${IMAGE}
+
+#Copy File into NFS Servrer
 cp -R /tmp/iso/* /tmp/iso/.disk /${IMAGE}/
 umount /tmp/iso
+#Add entry for NFS to export.
 echo "/${IMAGE}           *(ro,sync,no_wdelay,insecure_locks,no_root_squash,insecure,no_subtree_check)" >> /etc/exports
 rm -rf /tmp/${IMAGEISO}
 
-### NFS Server and Image files

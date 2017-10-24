@@ -17,7 +17,7 @@ ADD configs/dhcpd.conf /etc/dhcp/dhcpd.conf
 ADD configs/isc-dhcp-server /etc/default/isc-dhcp-server
 ADD run.sh /bin/run.sh
 
-RUN mkdir -p /install/tftpboot \
+RUN mkdir -p /install/tftpboot/${IMAGE} \
     && chmod -R 777 /install/tftpboot\
     && chown -R nobody /install/tftpboot \
     && touch /var/lib/dhcp/dhcpd.leases \
@@ -28,8 +28,6 @@ RUN mkdir -p /install/tftpboot \
 ### NFS Server and Image files
 COPY images/${IMAGEISO} /tmp
 
-RUN mkdir /tmp/iso
 
 RUN chmod 755 /bin/run.sh
-RUN env
 CMD ["/bin/run.sh"]

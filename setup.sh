@@ -34,6 +34,9 @@ mv "/tmp/vesamenu.c32" "/install/tftpboot/vesamenu.c32"
 mv "/tmp/default" "/install/tftpboot/pxelinux.cfg/default"
 mv "/tmp/run.sh" "~ubuntu/run.sh"
 
+#Change String
+sed -i -e "s/IMAGE/$IMAGE/g" "/install/tftpboot/pxelinux.cfg/default"
+
 #Change Permission
 ##TFTP Server
 chmod -R 777 /install/tftpboot

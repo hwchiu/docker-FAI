@@ -1,9 +1,15 @@
 FROM ubuntu:16.04
 MAINTAINER Hung-Wei Chiu <hwchiu@linkernetworks.com>
-RUN apt-get update -y
-RUN apt-get -y install isc-dhcp-server \
+
+ARG IMAGE=ubuntu-16.04.3-desktop-amd64
+ENV IMAGE=${IMAGE}
+ENV IMAGEISO=${IMAGE}.iso
+
+RUN apt-get update -y \
+  && apt-get -y install isc-dhcp-server \
     tftpd \
-    xinetd
+    xinetd \
+    nfs-kernel-server
 
 
 ADD configs/tftp  /etc/xinetd.d/tftp
@@ -13,13 +19,17 @@ ADD run.sh /bin/run.sh
 
 RUN mkdir -p /install/tftpboot \
     && chmod -R 777 /install/tftpboot\
-    && chown -R nobody /install/tftpboot
-
-RUN touch /var/lib/dhcp/dhcpd.leases \
+    && chown -R nobody /install/tftpboot \
+    && touch /var/lib/dhcp/dhcpd.leases \
     && chown root:dhcpd /var/lib/dhcp /var/lib/dhcp/dhcpd.leases \
     && chmod 775 /var/lib/dhcp \
     && chmod 664 /var/lib/dhcp/dhcpd.leases
 
-RUN chmod 755 /bin/run.sh
+### NFS Server and Image files
+COPY images/${IMAGEISO} /tmp
 
+RUN mkdir /tmp/iso
+
+RUN chmod 755 /bin/run.sh
+RUN env
 CMD ["/bin/run.sh"]

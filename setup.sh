@@ -32,7 +32,7 @@ mv "/tmp/libutil.c32" "/install/tftpboot/libutil.c32"
 mv "/tmp/ldlinux.c32" "/install/tftpboot/ldlinux.c32"
 mv "/tmp/vesamenu.c32" "/install/tftpboot/vesamenu.c32"
 mv "/tmp/default" "/install/tftpboot/pxelinux.cfg/default"
-mv "/tmp/run.sh" "/run.sh"
+mv "/tmp/run.sh" "~ubuntu/run.sh"
 
 #Change Permission
 ##TFTP Server

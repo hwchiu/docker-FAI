@@ -1,7 +1,0 @@
-DEFAULT vesamenu.c32
-MENU TITLE Network boot
- 
-LABEL IMAGE
-  MENU LABEL IMAGE
-  KERNEL IMAGE/vmlinuz.efi
-  APPEND initrd=IMAGE/initrd.lz root=/dev/nfs boot=casper netboot=nfs nfsroot=10.0.0.2:/IMAGE splash --

@@ -6,6 +6,6 @@ service tftp
   wait            = yes
   user            = nobody
   server          = /usr/sbin/in.tftpd
-  server_args     = -s /install/tftpboot 
+  server_args     = -s /srv/tftp/
   disable         = no
 }

@@ -17,4 +17,5 @@ fai-setup -v
 
 cp -a /usr/share/doc/fai-doc/examples/simple/* /srv/fai/config/
 mv "/tmp/dhcpd.conf" "/etc/dhcp/dhcpd.conf"
+mv "/tmp/run.sh:" ~/
 sed -i -e "s/\/var\/lib\/tftpboot/\/srv\/tftp/g" /etc/default/tftpd-hpa

@@ -3,9 +3,7 @@
 Vagrant.configure(2) do |config|
 
     config.vm.box = "ubuntu/xenial64"
-    config.vm.provision "file", source: "configs/tftp", destination: "/tmp/tftp"
     config.vm.provision "file", source: "configs/dhcpd.conf", destination: "/tmp/dhcpd.conf"
-    config.vm.provision "file", source: "configs/isc-dhcp-server", destination: "/tmp/isc-dhcp-server"
     config.vm.provision "file", source: "run.sh", destination: "/tmp/run.sh"
     config.vm.provision :shell, path: "setup.sh"
 
